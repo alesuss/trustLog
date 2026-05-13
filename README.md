@@ -2,7 +2,7 @@
 
 > **Transparencia, Equidad e Inmutabilidad para decisiones de Inteligencia Artificial.**
 
-TrustLog es un framework de ingeniería de software que actúa como capa de auditoría en tiempo real sobre modelos de IA de "caja negra". Intercepta cada decisión algorítmica, detecta sesgos matemáticamente, genera explicaciones en lenguaje natural y emite un **Ticket de Decisión** inmutable con firma criptográfica SHA-256.
+TrustLog es un framework implementado en **Java** que actúa como capa de auditoría en tiempo real sobre modelos de IA de "caja negra". Intercepta cada decisión algorítmica mediante un Proxy coordinador, aplica una cadena de validaciones, evalúa el riesgo con una estrategia intercambiable y emite un **Ticket de Decisión** con firma de integridad.
 
 ---
 
@@ -14,7 +14,6 @@ TrustLog es un framework de ingeniería de software que actúa como capa de audi
 - [Estructura del Proyecto](#estructura-del-proyecto)
 - [Requisitos Previos](#requisitos-previos)
 - [Instrucciones de Ejecución](#instrucciones-de-ejecución)
-- [Ejecución de Pruebas](#ejecución-de-pruebas)
 - [Casos de Uso](#casos-de-uso)
 - [Integrantes del Equipo](#integrantes-del-equipo)
 
@@ -26,83 +25,92 @@ Las empresas adoptan IA para procesos críticos (créditos, selección de person
 
 **TrustLog resuelve esto mediante:**
 
-- 🔍 **Intercepción transparente** (Proxy inverso) de peticiones entre cliente y modelo de IA.
-- ⚖️ **Análisis matemático de equidad** (Disparate Impact Ratio, SHAP coefficients).
-- 💬 **Explicabilidad en lenguaje natural** (NLP) de las variables que determinaron la decisión.
-- 🔒 **Ticket de Decisión inmutable** firmado con SHA-256, válido como evidencia legal.
+- 🔍 **Intercepción transparente** (Proxy inverso + Singleton) de peticiones entre cliente y modelo de IA.
+- 🚦 **Control de tráfico y permisos** antes de redirigir al modelo real (`TrafficController`, `AccountManager`).
+- ⛓️ **Cadena de validaciones** secuencial y extensible sobre cada reporte de auditoría.
+- ⚖️ **Evaluación de sesgo** configurable mediante estrategias intercambiables en tiempo de ejecución.
+- 🔒 **Hash de integridad** generado por `SecurityManager` sobre el `AuditReport` final.
 
 ---
 
 ## Patrones GoF Implementados
 
-### 1. 🔷 Proxy (`src/proxy/ai_request_proxy.py`)
+### 1. 🔷 Proxy (`Proxy`)
 
 **Categoría:** Estructural
 
-**Propósito:** Actuar como intermediario transparente entre el cliente y el modelo de IA externo, sin modificar la infraestructura existente del cliente.
+**Propósito:** Actuar como intermediario transparente entre el cliente y el modelo de IA externo (`RealModelIA`), sin que el cliente perciba diferencia alguna.
 
 **Implementación:**
-- `IModelIA` → interfaz Subject común al Proxy y al modelo real.
+- `IModelIA` → interfaz Subject compartida por el Proxy y el modelo real.
 - `RealModelIA` → RealSubject que simula el endpoint del modelo externo.
-- `AIRequestProxy` → Proxy que intercepta, registra y redirige cada petición.
-- Implementado también como **Singleton** para garantizar un único punto de intercepción por proceso.
+- `Proxy` → intercepta la petición, coordina todos los componentes de auditoría y redirige al modelo real al final.
+- Implementado también como **Singleton** (`getInstance()`) para garantizar un único punto de intercepción por proceso.
 
-**Justificación:** El equipo identificó que las empresas clientes no pueden (ni deben) modificar su modelo de IA. El Proxy permite añadir la capa de auditoría de forma no invasiva, cumpliendo el requisito `RFU-004` (intermediario transparente).
+**Componentes de soporte coordinados por el Proxy:**
 
-```python
-proxy = AIRequestProxy.get_instance()
-response = proxy.intercept_request(request)
+| Componente | Responsabilidad |
+|---|---|
+| `TrafficController` | Verifica la tasa de peticiones del usuario antes de procesar |
+| `AccountManager` | Valida el permiso de acceso al recurso del modelo de IA |
+| `SecurityManager` | Genera el hash de integridad SHA-256 del `AuditReport` |
+| `AuditEngine` | Ejecuta la estrategia de evaluación de riesgo activa |
+
+```java
+IModelIA sistema = Proxy.getInstance();
+String respuesta = sistema.request("Analizar riesgo crediticio");
 ```
 
 ---
 
-### 2. ⛓️ Chain of Responsibility (`src/chain/audit_chain.py`)
+### 2. ⛓️ Chain of Responsibility (`AuditHandler`)
 
 **Categoría:** Comportamiento
 
-**Propósito:** Aplicar una secuencia de validaciones y transformaciones a cada respuesta interceptada, donde cada handler puede procesar o detener el flujo.
+**Propósito:** Aplicar una secuencia de validaciones y transformaciones al `AuditReport` de cada petición interceptada, donde cada handler puede procesar y pasar el flujo al siguiente.
 
 **Cadena implementada:**
 
 ```
-PayloadValidator → SensitiveVariableFilter → BiasAnalyzer → NLPExplainer → HashSigner
+PayloadValidator → [extensible: nuevos handlers]
 ```
 
-| Handler | Responsabilidad | Requisito |
-|---|---|---|
-| `PayloadValidatorHandler` | Verifica que el payload tenga todos los campos requeridos | RFU-005 |
-| `SensitiveVariableFilter` | Detecta variables sensibles (género, edad, raza) con peso significativo | RFU-007 |
-| `BiasAnalyzerHandler` | Calcula el Disparate Impact Ratio y detecta discriminación algorítmica | RFU-002 |
-| `NLPExplainerHandler` | Traduce coeficientes técnicos a explicaciones en lenguaje humano | RFU-003 |
-| `HashSignerHandler` | Genera la firma SHA-256 del reporte (inmutabilidad) | RFU-008 |
+| Handler | Responsabilidad |
+|---|---|
+| `PayloadValidator` | Verifica que el reporte de auditoría tenga los campos requeridos |
 
-**Justificación:** La naturaleza secuencial y extensible de la validación encaja perfectamente con este patrón. Permite agregar nuevos filtros (ej. cumplimiento GDPR) sin modificar los existentes, respetando el principio Open/Closed.
+> **Extensibilidad:** La cadena se construye enlazando objetos `AuditHandler` mediante `setNext()`. Agregar nuevos filtros (ej. `BiasAnalyzerHandler`, `NLPExplainerHandler`) no requiere modificar los handlers existentes, respetando el principio Open/Closed.
 
-```python
-audit_report = run_audit_chain(request, response)
+```java
+// Construcción de la cadena
+AuditHandler chain = new PayloadValidator();
+// chain.setNext(new BiasAnalyzerHandler()); // fácil de extender
+
+chain.handle(report);
 ```
 
 ---
 
-### 3. 🎯 Strategy (`src/strategy/audit_strategy.py`)
+### 3. 🎯 Strategy (`AuditStrategy`)
 
 **Categoría:** Comportamiento
 
-**Propósito:** Definir una familia de algoritmos de evaluación de riesgo intercambiables según el sector del negocio (financiero, RRHH, salud).
+**Propósito:** Definir una familia de algoritmos de evaluación de riesgo intercambiables según el contexto del negocio, sin modificar el `AuditEngine` (Context).
 
-**Estrategias concretas:**
+**Implementación:**
 
-| Estrategia | Sector | Umbrales | Normativas |
-|---|---|---|---|
-| `FinancialAuditStrategy` | Créditos / Seguros | DIR ≥ 0.85, Confianza ≥ 70% | GDPR Art. 22, Ley 29733, EEOC |
-| `HRAuditStrategy` | Selección de Personal | DIR ≥ 0.80, Género < 2% | Ley 26772, OIT Conv. 111 |
-| `HealthAuditStrategy` | Diagnóstico Médico | DIR ≥ 0.90, Confianza ≥ 90% | Ley 29414, HIPAA |
+| Clase | Rol |
+|---|---|
+| `AuditStrategy` | Interfaz que declara `evaluate(AuditReport report)` |
+| `ConcreteStrategy` | Estrategia activa: marca sesgo si `confidenceLevel < 0.85` |
+| `AuditEngine` | Context que delega la evaluación a la estrategia configurada |
 
-**Justificación:** Cada sector tiene regulaciones y umbrales de riesgo distintos. El patrón Strategy permite que el `AuditEngine` (Context) aplique las reglas correctas dinámicamente, sin condicionales anidados, y permite agregar nuevos sectores sin modificar el código existente.
+**Justificación:** El `AuditEngine` aplica la regla de negocio correcta dinámicamente mediante `setStrategy()`, sin condicionales anidados. Permite agregar nuevas estrategias sectoriales (financiera, RRHH, salud) sin modificar código existente.
 
-```python
-engine = AuditEngine.for_sector("financial")
-result = engine.analyze(audit_report)
+```java
+AuditEngine engine = new AuditEngine();
+engine.setStrategy(new ConcreteStrategy());
+engine.analyzeInterference(report);
 ```
 
 ---
@@ -110,38 +118,26 @@ result = engine.analyze(audit_report)
 ## Arquitectura
 
 ```
-[Cliente B2B]
-      │
-      ▼
-┌─────────────────────────────────────┐
-│  PROXY (Patrón 1)                   │
-│  Intercepta y redirige la petición  │
-│  sin alterar el flujo del negocio   │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  MODELO DE IA EXTERNO               │
-│  (AWS SageMaker / OpenAI / Custom)  │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  CHAIN OF RESPONSIBILITY (Patrón 2) │
-│  Payload → Sesgo → NLP → Hash       │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  STRATEGY (Patrón 3)                │
-│  Evaluación de riesgo por sector    │
-└──────────────┬──────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────┐
-│  TICKET DE DECISIÓN (AuditReport)   │
-│  SHA-256 · NLP · Métricas · Riesgo  │
-└─────────────────────────────────────┘
+[Cliente]
+    │
+    │  IModelIA.request(inputData)
+    ▼
+┌──────────────────────────────────────────┐
+│  PROXY — Singleton (Patrón 1)            │
+│                                          │
+│  1. TrafficController.throttle()         │
+│  2. AccountManager.checkPermission()     │
+│  3. AuditReport creado                   │
+│  4. Chain.handle(report)  (Patrón 2)     │
+│  5. AuditEngine.analyzeInterference()    │
+│     └─ ConcreteStrategy.evaluate()       │
+│        (Patrón 3)                        │
+│  6. SecurityManager.generateHash()       │
+│  7. RealModelIA.request(inputData)       │
+└──────────────────┬───────────────────────┘
+                   │
+                   ▼
+         [Respuesta al Cliente]
 ```
 
 ---
@@ -150,31 +146,32 @@ result = engine.analyze(audit_report)
 
 ```
 trustlog/
-├── src/
-│   ├── models/
-│   │   └── decision_request.py     # Modelos de datos: Request, Response, AuditReport
-│   ├── proxy/
-│   │   └── ai_request_proxy.py     # Patrón Proxy (+ Singleton)
-│   ├── chain/
-│   │   └── audit_chain.py          # Patrón Chain of Responsibility
-│   ├── strategy/
-│   │   └── audit_strategy.py       # Patrón Strategy
-│   └── main.py                     # Orquestador principal (demo)
-├── tests/
-│   └── test_patterns.py            # Suite de pruebas unitarias
-└── README.md
+└── Main.java          # Todas las clases en un único archivo compilable
+    ├── IModelIA           (interfaz Subject)
+    ├── RealModelIA        (RealSubject)
+    ├── AuditReport        (modelo de datos del ticket de auditoría)
+    ├── SecurityManager    (generación de hash de integridad)
+    ├── TrafficController  (control de tasa de peticiones)
+    ├── AccountManager     (control de permisos de acceso)
+    ├── AuditStrategy      (interfaz Strategy)
+    ├── ConcreteStrategy   (evaluación de sesgo por nivel de confianza)
+    ├── AuditEngine        (Context del patrón Strategy)
+    ├── AuditHandler       (handler abstracto de la cadena)
+    ├── PayloadValidator   (primer eslabón de la cadena)
+    ├── Proxy              (Proxy + Singleton, coordinador central)
+    └── Main               (clase principal — punto de entrada)
 ```
 
 ---
 
 ## Requisitos Previos
 
-- Python **3.10** o superior
-- No requiere dependencias externas (usa solo la biblioteca estándar de Python)
+- **Java 11** o superior (compatible con Java 8+)
+- No requiere dependencias externas ni herramientas de build adicionales
 
-Verificar versión de Python:
+Verificar versión de Java:
 ```bash
-python --version
+java -version
 ```
 
 ---
@@ -188,121 +185,71 @@ git clone https://github.com/TU_USUARIO/trustlog.git
 cd trustlog
 ```
 
-### 2. (Opcional) Crear entorno virtual
+### 2. Compilar el archivo
 
 ```bash
-python -m venv venv
-source venv/bin/activate        # Linux/Mac
-venv\Scripts\activate           # Windows
+javac Main.java
 ```
 
-### 3. Ejecutar el demo principal
+### 3. Ejecutar el programa
 
 ```bash
-python -m src.main
+java Main
 ```
 
 **Salida esperada:**
 
 ```
-══════════════════════════════════════════════════════════
-  TRUSTLOG — Demo de Auditoría Algorítmica
-══════════════════════════════════════════════════════════
+--- [Proxy]: Interceptando Petición ---
+[TrafficController]: Verificando tasa de peticiones para USER-777
+[AccountManager]: Permiso concedido para IA_Model
+[Chain]: Validando Payload... ✓
+[AuditEngine]: Ejecutando estrategia para Financial
+[Security]: Hash de integridad: SHA-256-<hash>
+[Proxy]: Redirigiendo a RealModelIA...
 
-📋 CASO 1: Solicitud de crédito bancario
-
-04:29:00 [INFO] PASO 1: Proxy interceptando petición...
-04:29:00 [INFO] [PROXY] Petición #1 interceptada
-04:29:00 [INFO] PASO 2: Cadena de auditoría procesando respuesta...
-04:29:00 [INFO] [PayloadValidator] ✓ Payload válido.
-04:29:00 [INFO] [BiasAnalyzer] ✓ Equidad verificada. DIR=0.9197
-04:29:00 [INFO] [HashSigner] ✓ SHA-256 generado: 3287f893edb34da8...
-
-📄 EXPLICACIÓN EN LENGUAJE NATURAL:
-La solicitud fue aprobada principalmente debido a:
-  • Ingreso mensual (influyó positivamente, peso: 62%)
-  • Ratio de deuda (influyó negativamente, peso: 43%)
-  • Historial crediticio (influyó positivamente, peso: 21%)
-
-🔒 HASH DE INTEGRIDAD: 3287f893edb34da86e1838164721b42a...
-⚠️  NIVEL DE RIESGO:    ALTO
+[Cliente] Respuesta recibida: Respuesta de IA Real para: Analizar riesgo crediticio
 ```
-
-### 4. Usar TrustLog desde código propio
-
-```python
-from src.main import audit_decision
-
-# Auditar una decisión crediticia
-ticket = audit_decision(
-    input_data={
-        "monthly_income": 4500,
-        "credit_history_years": 5,
-        "debt_ratio": 0.30,
-        "age": 35,
-        "gender_encoded": 1,
-    },
-    sector="financial",  # "financial" | "hr" | "health"
-)
-
-print(ticket["analisis_sectorial"]["audit_summary"]["nlp_explanation"])
-print(ticket["ticket_de_decision"]["integrity_hash"])
-```
-
----
-
-## Ejecución de Pruebas
-
-```bash
-# Instalar pytest
-pip install pytest
-
-# Ejecutar todas las pruebas
-python -m pytest tests/ -v
-
-# Ejecutar pruebas por patrón
-python -m pytest tests/ -v -k "TestAIRequestProxy"    # Solo Proxy
-python -m pytest tests/ -v -k "TestAuditChain"        # Solo Chain
-python -m pytest tests/ -v -k "TestAuditStrategy"     # Solo Strategy
-```
-
-**Cobertura de pruebas:**
-
-| Módulo | Tests | Qué se verifica |
-|---|---|---|
-| Proxy | 5 | Singleton, intercepción, contador, modelo real |
-| Chain | 8 | Cada handler por separado + cadena completa |
-| Strategy | 9 | Cada estrategia + cambio en runtime + claves de respuesta |
 
 ---
 
 ## Casos de Uso
 
-### Sector Financiero — Créditos
-```python
-ticket = audit_decision(
-    input_data={"monthly_income": 2000, "credit_history_years": 1,
-                "debt_ratio": 0.60, "age": 22, "gender_encoded": 0},
-    sector="financial"
-)
+### Uso básico — petición al modelo auditado
+
+```java
+// El cliente interactúa con el Proxy como si fuera el modelo real
+IModelIA sistema = Proxy.getInstance();
+String respuesta = sistema.request("Analizar riesgo crediticio");
+System.out.println(respuesta);
 ```
 
-### Sector RRHH — Selección de Personal
-```python
-ticket = audit_decision(
-    input_data={"monthly_income": 3000, "credit_history_years": 3,
-                "debt_ratio": 0.20, "age": 28, "gender_encoded": 1},
-    sector="hr"
-)
+### Cambiar la estrategia de evaluación en tiempo de ejecución
+
+```java
+AuditEngine engine = new AuditEngine();
+
+// Estrategia estricta para sector salud
+engine.setStrategy(report -> {
+    if (report.confidenceLevel < 0.90) report.biasDetected = true;
+});
+engine.analyzeInterference(report);
 ```
 
-### Sector Salud — Diagnóstico Asistido
-```python
-ticket = audit_decision(
-    input_data={"monthly_income": 0, "credit_history_years": 0,
-                "debt_ratio": 0, "age": 55, "gender_encoded": 0},
-    sector="health"
-)
+### Extender la cadena con un nuevo handler
+
+```java
+// Crear nuevo handler
+class BiasAnalyzerHandler extends AuditHandler {
+    protected void process(AuditReport report) {
+        System.out.println("[Chain]: Analizando sesgo... ✓");
+        if (report.confidenceLevel < 0.80) report.biasDetected = true;
+    }
+}
+
+// Encadenar después del PayloadValidator
+AuditHandler validator = new PayloadValidator();
+validator.setNext(new BiasAnalyzerHandler());
 ```
 
 ---
@@ -317,6 +264,10 @@ ticket = audit_decision(
 | Jharinara Stefany Lescano Luna | U202427114 | Líder de Calidad / DevOps |
 
 ---
+
+**Universidad Peruana de Ciencias Aplicadas — Ingeniería de Software**
+*1ASI0720 Diseño y Patrones de Software · 202610 · NRC: 16683*
+*Profesor: Javier Teodocio Roque Espinoza*
 
 **Universidad Peruana de Ciencias Aplicadas — Ingeniería de Software**
 *1ASI0720 Diseño y Patrones de Software · 202610 · NRC: 16683*
