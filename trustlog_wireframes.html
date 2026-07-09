@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrustLog — Wireframes del Sistema</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#0D1B2A;--navy:#1A2E44;--teal:#028090;--mint:#02C39A;
+  --light:#F0F4F8;--border:#D1D9E0;--text:#1E2D3D;--muted:#8892A4;
+  --red:#C0392B;--amber:#E67E22;--green:#27AE60;--white:#FFFFFF;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:#e8ecf0;color:var(--text);padding:16px}
+
+/* NAV BAR */
+.wf-toolbar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--dark);border-radius:10px;
+  padding:10px 16px;margin-bottom:14px;
+  flex-wrap:wrap;
+}
+.wf-toolbar-logo{display:flex;align-items:center;gap:8px;margin-right:8px}
+.wf-toolbar-logo-icon{width:28px;height:28px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0}
+.wf-toolbar-logo-name{font-size:14px;font-weight:600;color:#fff}
+.wf-sep{width:1px;height:20px;background:rgba(255,255,255,0.12);margin:0 4px}
+.wf-btn{
+  padding:6px 14px;font-size:12px;font-weight:500;
+  border:0.5px solid rgba(255,255,255,0.15);border-radius:20px;
+  background:transparent;color:rgba(255,255,255,0.6);
+  cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;
+}
+.wf-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.wf-btn:hover:not(.active){background:rgba(255,255,255,0.08);color:#fff}
+.wf-screen-label{margin-left:auto;font-size:11px;color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace}
+
+/* SCREEN */
+.screen{display:none;border-radius:10px;overflow:visible;box-shadow:0 4px 24px rgba(13,27,42,0.15)}
+.screen.active{display:block}
+.shell{border-radius:10px;overflow:hidden}
+
+/* SHELL */
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:600px}
+
+/* SIDEBAR */
+.sidebar{background:var(--dark);display:flex;flex-direction:column}
+.sb-logo{padding:18px 16px 14px;display:flex;align-items:center;gap:10px;border-bottom:0.5px solid rgba(255,255,255,0.07)}
+.sb-logo-icon{width:28px;height:28px;background:var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.sb-logo-name{font-size:14px;font-weight:600;color:#fff}
+.sb-logo-tag{font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px}
+.sb-section{padding:12px 12px 4px;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.08em;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;margin:1px 6px;border-radius:7px;font-size:12.5px;color:rgba(255,255,255,0.6);cursor:pointer;transition:all .15s}
+.sb-item:hover{background:rgba(255,255,255,0.06);color:#fff}
+.sb-item.active{background:var(--teal);color:#fff}
+.sb-item i{font-size:15px;flex-shrink:0}
+.sb-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px}
+.sb-bottom{margin-top:auto;padding:10px 8px;border-top:0.5px solid rgba(255,255,255,0.07)}
+.sb-user{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px}
+.sb-avatar{width:26px;height:26px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;flex-shrink:0}
+.sb-user-name{font-size:11.5px;font-weight:500;color:rgba(255,255,255,0.8)}
+.sb-user-role{font-size:10px;color:rgba(255,255,255,0.35)}
+
+/* MAIN */
+.main{background:var(--light);overflow:auto;display:flex;flex-direction:column}
+.topbar{background:#fff;border-bottom:0.5px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.topbar-title{font-size:14px;font-weight:500;color:var(--text);flex:1}
+.topbar-search{display:flex;align-items:center;gap:7px;background:var(--light);border:0.5px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;color:var(--muted);min-width:180px}
+.topbar-search i{font-size:14px}
+.topbar-icon{width:32px;height:32px;border-radius:7px;border:0.5px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);font-size:16px;position:relative;flex-shrink:0}
+.notif-dot{position:absolute;top:5px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+
+.page-body{padding:18px 20px;flex:1}
+.page-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.page-hd h1{font-size:17px;font-weight:600;color:var(--text)}
+.page-hd p{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all .15s;font-family:inherit}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-primary:hover{background:#026f7a}
+.btn-outline{background:#fff;color:var(--teal);border:0.5px solid var(--teal)}
+.btn-outline:hover{background:#f0fafb}
+.btn-ghost{background:transparent;color:var(--muted);border:0.5px solid var(--border)}
+.btn-ghost:hover{background:var(--light);color:var(--text)}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-danger{background:#fde8e6;color:var(--red);border:0.5px solid #f5c6c2}
+
+/* KPI */
+.kpi-grid{display:grid;gap:12px;margin-bottom:16px}
+.kpi-4{grid-template-columns:repeat(4,1fr)}
+.kpi-3{grid-template-columns:repeat(3,1fr)}
+.kpi{background:#fff;border:0.5px solid var(--border);border-radius:9px;padding:13px 14px}
+.kpi-label{font-size:11px;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.kpi-val{font-size:20px;font-weight:600;color:var(--text);letter-spacing:-0.5px}
+.kpi-delta{font-size:10px;margin-top:3px}
+.up{color:var(--green)}.down{color:var(--red)}.neutral{color:var(--muted)}
+
+/* CARD */
+.card{background:#fff;border:0.5px solid var(--border);border-radius:9px;padding:14px}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card-hd h3{font-size:12.5px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.card-hd h3 i{color:var(--teal);font-size:14px}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10.5px;font-weight:500}
+.tag-red{background:#fde8e6;color:var(--red)}
+.tag-green{background:#e6f7ee;color:var(--green)}
+.tag-amber{background:#fef3e2;color:var(--amber)}
+.tag-teal{background:#e0f5f7;color:var(--teal)}
+.tag-gray{background:#f0f4f8;color:var(--muted)}
+.tag-navy{background:#e8edf3;color:var(--navy)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;padding:7px 10px;color:var(--muted);font-weight:500;border-bottom:0.5px solid var(--border);font-size:11px}
+.tbl td{padding:8px 10px;border-bottom:0.5px solid #f0f4f8;color:var(--text);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#f8fafc}
+
+/* PROGRESS */
+.prog{height:5px;border-radius:3px;background:var(--border);overflow:hidden;margin-top:4px}
+.prog-fill{height:100%;border-radius:3px}
+
+/* FORM */
+.form-group{margin-bottom:12px}
+.form-label{font-size:11.5px;font-weight:500;color:var(--text);margin-bottom:4px;display:block}
+.form-hint{font-size:10px;color:var(--muted);margin-top:3px}
+.form-input{width:100%;padding:8px 11px;border:0.5px solid var(--border);border-radius:7px;font-size:12px;background:#fff;color:var(--text);font-family:inherit}
+.form-input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 2px rgba(2,128,144,0.1)}
+.form-select{width:100%;padding:8px 11px;border:0.5px solid var(--border);border-radius:7px;font-size:12px;background:#fff;color:var(--text);font-family:inherit;appearance:none}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-divider{border:none;border-top:0.5px solid var(--border);margin:14px 0}
+
+/* HASH */
+.hash-box{background:var(--light);border:0.5px solid var(--border);border-radius:7px;padding:9px 11px;margin-top:10px}
+.hash-label{font-size:10px;color:var(--muted);margin-bottom:3px;display:flex;align-items:center;gap:4px}
+.hash-val{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text);word-break:break-all}
+
+/* SHAP */
+.shap-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.shap-name{font-size:11.5px;color:var(--text);width:120px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shap-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.shap-val{font-size:11px;width:38px;text-align:right;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-weight:500}
+
+/* EXPLAIN BOX */
+.explain-box{background:#f6fbff;border:0.5px solid #c5def5;border-radius:8px;padding:12px;font-size:12px;line-height:1.7;color:var(--text);margin-bottom:10px}
+.hl{background:#d4f5ed;padding:1px 4px;border-radius:3px;color:#0a5e55;font-weight:500}
+.hl-warn{background:#fde8e6;padding:1px 4px;border-radius:3px;color:var(--red);font-weight:500}
+
+/* TOGGLE */
+.toggle{width:34px;height:18px;border-radius:9px;position:relative;cursor:pointer;flex-shrink:0;transition:background .15s}
+.toggle.on{background:var(--teal)}
+.toggle.off{background:var(--border)}
+.toggle-knob{width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.toggle.on .toggle-knob{left:18px}
+.toggle.off .toggle-knob{left:2px}
+
+/* AVATAR */
+.avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;flex-shrink:0}
+
+/* TIMELINE */
+.tl-item{display:flex;gap:12px;position:relative;padding-bottom:14px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:11px;top:22px;bottom:0;width:1px;background:var(--border)}
+.tl-item:last-child::before{display:none}
+.tl-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px}
+.tl-content{flex:1}
+.tl-title{font-size:12px;font-weight:500;color:var(--text)}
+.tl-meta{font-size:10px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace}
+
+/* SCREEN-SPECIFIC HELPERS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ticket-panel{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start}
+.nlp-panel{display:grid;grid-template-columns:1fr 240px;gap:14px;align-items:start}
+
+/* LOGIN SCREEN */
+.login-wrap{display:flex;min-height:600px}
+.login-left{width:42%;background:var(--dark);display:flex;flex-direction:column;padding:36px 32px}
+.login-right{flex:1;display:flex;align-items:center;justify-content:center;padding:36px 44px;background:#fff}
+.login-form{width:100%;max-width:340px}
+
+/* STATUS BADGE */
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dot-green{background:var(--green)}
+.dot-red{background:var(--red)}
+.dot-amber{background:var(--amber)}
+.dot-teal{background:var(--teal)}
+
+/* GDPR REPORT */
+.gdpr-section{background:var(--light);border:0.5px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.gdpr-section-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+
+/* PULSE */
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:p 2s infinite;display:inline-block}
+@keyframes p{0%,100%{opacity:1}50%{opacity:0.4}}
+</style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="wf-toolbar">
+  <div class="wf-toolbar-logo">
+    <div class="wf-toolbar-logo-icon"><i class="ti ti-shield-check"></i></div>
+    <span class="wf-toolbar-logo-name">TrustLog</span>
+  </div>
+  <div class="wf-sep"></div>
+  <button class="wf-btn active" onclick="show('login',this)"><i class="ti ti-lock"></i> Login</button>
+  <button class="wf-btn" onclick="show('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Dashboard</button>
+  <button class="wf-btn" onclick="show('ticket',this)"><i class="ti ti-file-certificate"></i> Tickets</button>
+  <button class="wf-btn" onclick="show('nlp',this)"><i class="ti ti-brain"></i> Reporte NLP</button>
+  <button class="wf-btn" onclick="show('models',this)"><i class="ti ti-cpu"></i> Modelos</button>
+  <button class="wf-btn" onclick="show('roles',this)"><i class="ti ti-users"></i> Roles</button>
+  <button class="wf-btn" onclick="show('gdpr',this)"><i class="ti ti-file-text"></i> GDPR</button>
+  <button class="wf-btn" onclick="show('timeline',this)"><i class="ti ti-timeline"></i> Timeline</button>
+  <button class="wf-btn" onclick="show('clientes',this)"><i class="ti ti-building"></i> Clientes</button>
+  <span class="wf-screen-label" id="screen-label">Pantalla 1 / 8</span>
+</div>
+
+<!-- ══ SCREEN 1: LOGIN ══ -->
+<div id="s-login" class="screen active">
+  <div class="login-wrap">
+    <div class="login-left">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:auto">
+        <div style="width:32px;height:32px;background:var(--teal);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px"><i class="ti ti-shield-check"></i></div>
+        <span style="font-size:16px;font-weight:600;color:#fff">TrustLog</span>
+      </div>
+      <div style="margin:auto 0">
+        <div style="font-size:22px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px">Auditoría algorítmica<br>para IA responsable</div>
+        <p style="font-size:12.5px;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:20px">Intercepción, análisis de equidad y certificación inmutable para cada decisión de IA de tu organización.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(255,255,255,0.55)">
+            <div style="width:20px;height:20px;border-radius:50%;background:rgba(2,195,154,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:11px;color:var(--mint)"></i></div>
+            Cumplimiento GDPR Art. 22 y Ley N° 29733
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(255,255,255,0.55)">
+            <div style="width:20px;height:20px;border-radius:50%;background:rgba(2,195,154,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:11px;color:var(--mint)"></i></div>
+            Tickets inmutables con firma SHA-256
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:11.5px;color:rgba(255,255,255,0.55)">
+            <div style="width:20px;height:20px;border-radius:50%;background:rgba(2,195,154,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:11px;color:var(--mint)"></i></div>
+            Explicabilidad NLP en español e inglés
+          </div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.2);margin-top:auto">© 2026 TrustLog · UPC 1ASI0720</div>
+    </div>
+    <div class="login-right">
+      <div class="login-form">
+        <div style="font-size:19px;font-weight:600;color:var(--text);margin-bottom:3px">Iniciar sesión</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:20px">Ingresa tus credenciales corporativas</p>
+        <div class="form-group">
+          <label class="form-label" for="email-inp">Correo corporativo</label>
+          <div style="position:relative">
+            <i class="ti ti-mail" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted)"></i>
+            <input id="email-inp" class="form-input" type="email" placeholder="usuario@empresa.com" style="padding-left:32px">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pass-inp">Contraseña</label>
+          <div style="position:relative">
+            <i class="ti ti-lock" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted)"></i>
+            <input id="pass-inp" class="form-input" type="password" placeholder="••••••••" style="padding-left:32px;padding-right:32px">
+            <i class="ti ti-eye" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted);cursor:pointer"></i>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px">
+            <label style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--muted);cursor:pointer">
+              <input type="checkbox" style="width:13px;height:13px"> Recuérdame
+            </label>
+            <a href="#" style="font-size:11.5px;color:var(--teal);text-decoration:none">¿Olvidaste tu contraseña?</a>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:10px;font-size:13px;margin-top:4px" onclick="show('dashboard',document.querySelectorAll('.wf-btn')[1])">
+          <i class="ti ti-login"></i> Ingresar a TrustLog
+        </button>
+        <div style="margin-top:16px;padding-top:14px;border-top:0.5px solid var(--border);text-align:center">
+          <p style="font-size:11.5px;color:var(--muted)">¿Primera vez? <a href="#" style="color:var(--teal);text-decoration:none">Solicita acceso a tu administrador</a></p>
+        </div>
+        <div style="margin-top:12px;padding:9px 12px;background:var(--light);border-radius:7px;display:flex;align-items:center;gap:7px">
+          <i class="ti ti-shield-lock" style="color:var(--teal);font-size:15px"></i>
+          <span style="font-size:10.5px;color:var(--muted)">Conexión cifrada TLS 1.3 · SSO disponible para Enterprise</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 2: DASHBOARD ══ -->
+<div id="s-dashboard" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div>
+        <div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div>
+      </div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item active"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item" onclick="show('models',document.querySelectorAll('.wf-btn')[4])"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item" onclick="show('clientes',null)"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item" onclick="show('roles',document.querySelectorAll('.wf-btn')[5])"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item" onclick="show('gdpr',document.querySelectorAll('.wf-btn')[6])"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-item"><i class="ti ti-settings"></i> Configuración</div>
+      <div class="sb-bottom">
+        <div class="sb-user">
+          <div class="sb-avatar">AC</div>
+          <div style="flex:1;overflow:hidden">
+            <div class="sb-user-name">Alejandro Cumpen</div>
+            <div class="sb-user-role">Super Admin</div>
+          </div>
+          <i class="ti ti-chevron-right" style="font-size:12px;color:rgba(255,255,255,0.25)"></i>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Dashboard</span>
+        <div class="topbar-search"><i class="ti ti-search"></i> Buscar tickets, modelos…</div>
+        <div class="topbar-icon" style="position:relative"><i class="ti ti-bell"></i><div class="notif-dot"></div></div>
+        <div class="topbar-icon"><i class="ti ti-refresh"></i></div>
+        <select class="form-select" style="width:auto;font-size:11px;padding:5px 9px;border-radius:6px">
+          <option>Últimos 7 días</option><option>Hoy</option><option>Mes</option>
+        </select>
+        <button class="btn btn-primary btn-sm"><i class="ti ti-download"></i> Exportar</button>
+      </div>
+      <div class="page-body">
+        <div class="page-hd">
+          <div><h1>Vista general</h1><p><span class="pulse"></span> En vivo · Miércoles 14 mayo 2026 · NRC 16683</p></div>
+        </div>
+        <!-- KPIs -->
+        <div class="kpi-grid kpi-4">
+          <div class="kpi">
+            <div class="kpi-label"><i class="ti ti-activity"></i> Peticiones hoy</div>
+            <div class="kpi-val">25,142</div>
+            <div class="kpi-delta up"><i class="ti ti-trending-up"></i> +12.4% vs ayer</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label"><i class="ti ti-scale"></i> DIR promedio</div>
+            <div class="kpi-val" style="color:var(--green)">0.83</div>
+            <div class="kpi-delta up">Por encima del umbral 0.80</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label"><i class="ti ti-alert-triangle"></i> Alertas activas</div>
+            <div class="kpi-val" style="color:var(--red)">3</div>
+            <div class="kpi-delta down">2 críticas · 1 media</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label"><i class="ti ti-certificate"></i> Tickets emitidos</div>
+            <div class="kpi-val">25,139</div>
+            <div class="kpi-delta neutral">100% cobertura SHA-256</div>
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="two-col" style="margin-bottom:14px">
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-chart-bar"></i> DIR por sector</h3><span style="font-size:10px;color:var(--muted)">Últimos 7 días</span></div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--muted)">Financiero</span><span style="font-weight:600;color:var(--green)">0.89</span></div>
+                <div class="prog"><div class="prog-fill" style="width:89%;background:var(--green)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--muted)">Salud</span><span style="font-weight:600;color:var(--green)">0.91</span></div>
+                <div class="prog"><div class="prog-fill" style="width:91%;background:var(--green)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--muted)">RRHH</span><span style="font-weight:600;color:var(--amber)">0.74</span></div>
+                <div class="prog"><div class="prog-fill" style="width:74%;background:var(--amber)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--muted)">Crédito</span><span style="font-weight:600;color:var(--red)">0.71</span></div>
+                <div class="prog"><div class="prog-fill" style="width:71%;background:var(--red)"></div></div>
+              </div>
+              <div style="padding-top:8px;border-top:0.5px solid var(--border);font-size:10px;color:var(--muted)">Umbral mínimo: <strong>0.80</strong> · Sectores bajo umbral: <strong style="color:var(--red)">2</strong></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-alert-circle" style="color:var(--red)"></i> Alertas recientes</h3><span class="tag tag-red">3 activas</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:9px;background:#fff8f7;border:0.5px solid #fcd5d0;border-radius:7px;display:flex;gap:9px">
+                <span class="status-dot dot-red" style="margin-top:4px"></span>
+                <div>
+                  <div style="font-size:12px;font-weight:500">Banco Andino — DIR 0.71</div>
+                  <div style="font-size:10.5px;color:var(--muted)">credit-modelV2 · Crédito</div>
+                  <div style="font-size:10px;color:var(--red);margin-top:2px">Hace 14 min</div>
+                </div>
+                <button class="btn btn-ghost btn-sm" style="margin-left:auto;align-self:start" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])">Ver</button>
+              </div>
+              <div style="padding:9px;background:#fff8f7;border:0.5px solid #fcd5d0;border-radius:7px;display:flex;gap:9px">
+                <span class="status-dot dot-red" style="margin-top:4px"></span>
+                <div>
+                  <div style="font-size:12px;font-weight:500">SeguroPeru — DIR 0.79</div>
+                  <div style="font-size:10.5px;color:var(--muted)">risk-assessV1 · Seguros</div>
+                  <div style="font-size:10px;color:var(--red);margin-top:2px">Hace 1 h</div>
+                </div>
+                <button class="btn btn-ghost btn-sm" style="margin-left:auto;align-self:start">Ver</button>
+              </div>
+              <div style="padding:9px;background:#fffbf0;border:0.5px solid #fde8c0;border-radius:7px;display:flex;gap:9px">
+                <span class="status-dot dot-amber" style="margin-top:4px"></span>
+                <div>
+                  <div style="font-size:12px;font-weight:500">RRHH Corp — baja cobertura</div>
+                  <div style="font-size:10.5px;color:var(--muted)">hire-screenV3 · 82% tickets</div>
+                  <div style="font-size:10px;color:var(--amber);margin-top:2px">Hace 3 h</div>
+                </div>
+                <button class="btn btn-ghost btn-sm" style="margin-left:auto;align-self:start">Ver</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Últimas transacciones -->
+        <div class="card">
+          <div class="card-hd"><h3><i class="ti ti-history"></i> Últimas transacciones auditadas</h3><button class="btn btn-outline btn-sm" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])">Ver todas →</button></div>
+          <table class="tbl">
+            <thead><tr><th>ID Ticket</th><th>Empresa</th><th>Modelo</th><th>Sector</th><th>DIR</th><th>Eq. Odds</th><th>Estado</th><th>Hora</th></tr></thead>
+            <tbody>
+              <tr><td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00871</td><td>Banco Andino</td><td style="font-size:11px;color:var(--muted)">credit-modelV2</td><td><span class="tag tag-teal">Financiero</span></td><td><strong style="color:var(--red)">0.71</strong></td><td style="color:var(--amber);font-size:11px">0.68</td><td><span class="tag tag-red">Alerta</span></td><td style="color:var(--muted);font-size:11px">14:32</td></tr>
+              <tr><td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00870</td><td>SeguroPeru</td><td style="font-size:11px;color:var(--muted)">risk-assessV1</td><td><span class="tag tag-gray">Seguros</span></td><td><strong style="color:var(--amber)">0.79</strong></td><td style="color:var(--amber);font-size:11px">0.75</td><td><span class="tag tag-amber">Revisión</span></td><td style="color:var(--muted);font-size:11px">13:58</td></tr>
+              <tr><td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00869</td><td>ClínicaSalud</td><td style="font-size:11px;color:var(--muted)">diag-modelV4</td><td><span class="tag tag-teal">Salud</span></td><td><strong style="color:var(--green)">0.91</strong></td><td style="color:var(--green);font-size:11px">0.88</td><td><span class="tag tag-green">Aprobado</span></td><td style="color:var(--muted);font-size:11px">13:21</td></tr>
+              <tr><td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00868</td><td>BancoNorte</td><td style="font-size:11px;color:var(--muted)">loan-v7</td><td><span class="tag tag-teal">Financiero</span></td><td><strong style="color:var(--green)">0.86</strong></td><td style="color:var(--green);font-size:11px">0.83</td><td><span class="tag tag-green">Aprobado</span></td><td style="color:var(--muted);font-size:11px">12:47</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 3: TICKET DE DECISIÓN ══ -->
+<div id="s-ticket" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div><div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div></div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item" onclick="show('dashboard',document.querySelectorAll('.wf-btn')[1])"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item active"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item" onclick="show('models',document.querySelectorAll('.wf-btn')[4])"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item" onclick="show('clientes',null)"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item" onclick="show('roles',document.querySelectorAll('.wf-btn')[5])"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item" onclick="show('gdpr',document.querySelectorAll('.wf-btn')[6])"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar">AC</div><div style="flex:1;overflow:hidden"><div class="sb-user-name">Alejandro Cumpen</div><div class="sb-user-role">Super Admin</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Tickets de Decisión</span>
+        <div class="topbar-search"><i class="ti ti-search"></i> Buscar por ID, empresa, modelo…</div>
+        <select class="form-select" style="width:auto;font-size:11px;padding:5px 9px;border-radius:6px"><option>Todos los estados</option><option>Alerta</option><option>Revisión</option><option>Aprobado</option></select>
+        <button class="btn btn-outline btn-sm"><i class="ti ti-filter"></i> Filtrar</button>
+        <button class="btn btn-ghost btn-sm"><i class="ti ti-table-export"></i> Excel</button>
+      </div>
+      <div class="page-body">
+        <div class="page-hd"><div><h1>Tickets de Decisión</h1><p>Registro inmutable de auditorías · Firma SHA-256</p></div></div>
+        <div class="ticket-panel">
+          <!-- Lista -->
+          <div>
+            <div class="card" style="padding:0;overflow:hidden">
+              <table class="tbl">
+                <thead><tr><th>ID Ticket</th><th>Empresa</th><th>Modelo</th><th>DIR</th><th>Decisión</th><th>Estado</th><th></th></tr></thead>
+                <tbody>
+                  <tr style="background:#fff8f7;cursor:pointer" onclick="document.getElementById('tk-detail').style.display='block'">
+                    <td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00871</td>
+                    <td style="font-weight:500">Banco Andino</td><td style="font-size:11px;color:var(--muted)">credit-modelV2</td>
+                    <td><strong style="color:var(--red)">0.71</strong></td><td>Rechazado</td>
+                    <td><span class="tag tag-red"><i class="ti ti-alert-triangle" style="font-size:10px"></i> Alerta sesgo</span></td>
+                    <td><button class="btn btn-outline btn-sm" onclick="document.getElementById('tk-detail').style.display='block'">Ver</button></td>
+                  </tr>
+                  <tr style="cursor:pointer">
+                    <td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00870</td>
+                    <td>SeguroPeru</td><td style="font-size:11px;color:var(--muted)">risk-assessV1</td>
+                    <td><strong style="color:var(--amber)">0.79</strong></td><td>Revisión</td>
+                    <td><span class="tag tag-amber">Revisión</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr style="cursor:pointer">
+                    <td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00869</td>
+                    <td>ClínicaSalud</td><td style="font-size:11px;color:var(--muted)">diag-modelV4</td>
+                    <td><strong style="color:var(--green)">0.91</strong></td><td>Aprobado</td>
+                    <td><span class="tag tag-green">Aprobado</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr style="cursor:pointer">
+                    <td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00868</td>
+                    <td>BancoNorte</td><td style="font-size:11px;color:var(--muted)">loan-v7</td>
+                    <td><strong style="color:var(--green)">0.86</strong></td><td>Aprobado</td>
+                    <td><span class="tag tag-green">Aprobado</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                  <tr style="cursor:pointer">
+                    <td style="font-family:monospace;font-size:11px;color:var(--teal)">TXN-00867</td>
+                    <td>RRHH Corp</td><td style="font-size:11px;color:var(--muted)">hire-screenV3</td>
+                    <td><strong style="color:var(--amber)">0.77</strong></td><td>Rechazado</td>
+                    <td><span class="tag tag-amber">Revisión</span></td>
+                    <td><button class="btn btn-outline btn-sm">Ver</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;font-size:11px;color:var(--muted)">
+              <span>Mostrando 5 de 25,139 tickets</span>
+              <div style="display:flex;gap:4px">
+                <button class="btn btn-ghost btn-sm">‹ Anterior</button>
+                <button class="btn btn-outline btn-sm">1</button>
+                <button class="btn btn-ghost btn-sm">2</button>
+                <button class="btn btn-ghost btn-sm">3</button>
+                <button class="btn btn-ghost btn-sm">Siguiente ›</button>
+              </div>
+            </div>
+          </div>
+          <!-- Detalle -->
+          <div id="tk-detail" style="display:none">
+            <div style="background:#fff;border:0.5px solid var(--border);border-radius:9px;overflow:hidden">
+              <div style="background:var(--navy);padding:14px 16px;color:#fff">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                  <div>
+                    <div style="font-size:10.5px;color:rgba(255,255,255,0.45)">#TXN-2026-00871</div>
+                    <div style="font-size:14px;font-weight:600;margin-top:2px">Ticket de Decisión</div>
+                  </div>
+                  <span style="background:rgba(192,57,43,0.25);color:#f5a09a;font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:4px"><i class="ti ti-alert-triangle" style="font-size:11px"></i> Alerta sesgo</span>
+                </div>
+              </div>
+              <div style="padding:14px 16px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">Empresa</span><span style="font-size:12px;font-weight:500">Banco Andino S.A.</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">Modelo IA</span><span style="font-size:12px;font-weight:500">credit-modelV2</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">Sector</span><span class="tag tag-teal">Financiero</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">DIR calculado</span><span style="font-size:12px;font-weight:600;color:var(--red)">0.71 (&lt; 0.80)</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">Equalized Odds</span><span style="font-size:12px;font-weight:500;color:var(--amber)">0.68</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">Decisión</span><span style="font-size:12px;font-weight:600;color:var(--red)">Crédito RECHAZADO</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">Confianza modelo</span><span style="font-size:12px;font-weight:500">78.3%</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f0f4f8"><span style="font-size:11.5px;color:var(--muted)">Timestamp</span><span style="font-size:11px;font-family:monospace;color:var(--text)">2026-05-14T14:32:07Z</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0"><span style="font-size:11.5px;color:var(--muted)">Versión modelo</span><span style="font-size:11px;color:var(--muted)">v2.1.4</span></div>
+                <div class="hash-box">
+                  <div class="hash-label"><i class="ti ti-lock" style="font-size:11px;color:var(--teal)"></i> SHA-256 · Inmutable</div>
+                  <div class="hash-val">4f9a2c8b1d3e6f0a7b5c9d2e1f8a3b4c…e71d</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;margin-top:8px;font-size:11px;color:var(--green)">
+                  <i class="ti ti-circle-check" style="font-size:13px"></i> Hash verificado · Registro inmutable
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px">
+                  <button class="btn btn-primary btn-sm" style="justify-content:center"><i class="ti ti-download"></i> PDF</button>
+                  <button class="btn btn-outline btn-sm" style="justify-content:center" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Ver NLP</button>
+                </div>
+                <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:6px" onclick="show('timeline',document.querySelectorAll('.wf-btn')[7])"><i class="ti ti-timeline"></i> Ver línea de tiempo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 4: REPORTE NLP ══ -->
+<div id="s-nlp" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div><div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div></div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item" onclick="show('dashboard',document.querySelectorAll('.wf-btn')[1])"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item active"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item" onclick="show('models',document.querySelectorAll('.wf-btn')[4])"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item" onclick="show('clientes',null)"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item" onclick="show('roles',document.querySelectorAll('.wf-btn')[5])"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item" onclick="show('gdpr',document.querySelectorAll('.wf-btn')[6])"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar">AC</div><div style="flex:1;overflow:hidden"><div class="sb-user-name">Alejandro Cumpen</div><div class="sb-user-role">Super Admin</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Reporte NLP — TXN-00871</span>
+        <div style="display:flex;gap:6px;margin-left:auto">
+          <button class="btn btn-outline btn-sm" style="background:rgba(2,128,144,0.08)"><i class="ti ti-world"></i> ES</button>
+          <button class="btn btn-ghost btn-sm">EN</button>
+          <button class="btn btn-primary btn-sm"><i class="ti ti-download"></i> Descargar PDF</button>
+        </div>
+      </div>
+      <div class="page-body">
+        <!-- Breadcrumb -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:9px 12px;background:#fff;border:0.5px solid var(--border);border-radius:8px">
+          <span class="tag tag-red"><i class="ti ti-alert-triangle" style="font-size:10px"></i> Alerta sesgo</span>
+          <span style="font-size:11.5px;color:var(--muted)">Banco Andino · credit-modelV2 · 14 may 2026, 14:32</span>
+          <div style="margin-left:auto;font-size:11px;color:var(--muted)">BLEU score: <strong style="color:var(--teal)">0.74</strong></div>
+        </div>
+        <div class="nlp-panel">
+          <!-- Main content -->
+          <div>
+            <div class="card" style="margin-bottom:12px">
+              <div class="card-hd"><h3><i class="ti ti-message-dots"></i> Explicación en lenguaje natural</h3></div>
+              <div class="explain-box">
+                La solicitud de crédito del cliente fue <span class="hl-warn">rechazada</span> por el modelo <em>credit-modelV2</em>. El análisis de equidad detecta un <span class="hl-warn">Índice de Impacto Dispar (DIR) de 0.71</span>, por debajo del umbral requerido de 0.80, lo que indica una posible discriminación algorítmica.
+              </div>
+              <div class="explain-box">
+                Los factores que más influyeron negativamente en la decisión fueron: <span class="hl-warn">historial crediticio (–34%)</span> e <span class="hl-warn">ingreso mensual (–28%)</span>. El factor <span class="hl">edad del solicitante</span> aparece correlacionado con el grupo protegido, lo que puede estar amplificando el sesgo.
+              </div>
+              <div class="explain-box" style="background:#f6fff9;border-color:#c0e8d0">
+                <span class="hl">Recomendación:</span> Se sugiere revisión manual de esta decisión y auditoría del dataset de entrenamiento del modelo para mitigar el sesgo detectado. Esta decisión queda registrada con hash <strong style="font-family:monospace">4f9a2c8b…e71d</strong> para efectos legales según GDPR Art. 22 y Ley N° 29733.
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-chart-bar"></i> Factores SHAP — impacto en la decisión</h3></div>
+              <div style="margin-top:4px">
+                <div class="shap-row">
+                  <span class="shap-name">Historial crediticio</span>
+                  <div class="shap-bar-wrap"><div style="height:100%;width:85%;background:var(--red);border-radius:4px"></div></div>
+                  <span class="shap-val" style="color:var(--red)">–34%</span>
+                </div>
+                <div class="shap-row">
+                  <span class="shap-name">Ingreso mensual</span>
+                  <div class="shap-bar-wrap"><div style="height:100%;width:68%;background:var(--red);border-radius:4px"></div></div>
+                  <span class="shap-val" style="color:var(--red)">–28%</span>
+                </div>
+                <div class="shap-row">
+                  <span class="shap-name">Edad solicitante</span>
+                  <div class="shap-bar-wrap"><div style="height:100%;width:42%;background:var(--amber);border-radius:4px"></div></div>
+                  <span class="shap-val" style="color:var(--amber)">–17%</span>
+                </div>
+                <div class="shap-row">
+                  <span class="shap-name">Nivel educativo</span>
+                  <div class="shap-bar-wrap"><div style="height:100%;width:38%;background:var(--green);border-radius:4px"></div></div>
+                  <span class="shap-val" style="color:var(--green)">+15%</span>
+                </div>
+                <div class="shap-row">
+                  <span class="shap-name">Tiempo en empleo</span>
+                  <div class="shap-bar-wrap"><div style="height:100%;width:15%;background:var(--green);border-radius:4px"></div></div>
+                  <span class="shap-val" style="color:var(--green)">+6%</span>
+                </div>
+              </div>
+              <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid var(--border);font-size:10px;color:var(--muted)">
+                Algoritmo: SHAP (SHapley Additive exPlanations) · Modelo: clasificación binaria
+              </div>
+            </div>
+          </div>
+          <!-- Sidebar -->
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="card">
+              <div class="card-hd"><h3>Métricas de equidad</h3></div>
+              <div style="text-align:center;padding:8px 0 10px">
+                <div style="font-size:10px;color:var(--muted);margin-bottom:4px">Disparate Impact Ratio</div>
+                <div style="font-size:28px;font-weight:700;color:var(--red);letter-spacing:-1px">0.71</div>
+                <div class="prog" style="margin:8px 0 4px"><div class="prog-fill" style="width:71%;background:var(--red)"></div></div>
+                <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted)"><span>0.0</span><span style="color:var(--amber);font-weight:600">⚑ 0.80</span><span>1.0</span></div>
+              </div>
+              <div style="border-top:0.5px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Equalized Odds</span><span style="font-weight:600;color:var(--amber)">0.68</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Demographic Parity</span><span style="font-weight:600;color:var(--amber)">0.72</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Confianza</span><span style="font-weight:600">78.3%</span></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><h3>Normativa aplicada</h3></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:6px;font-size:11.5px"><i class="ti ti-circle-check" style="color:var(--teal);font-size:13px"></i> GDPR Art. 22</div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:11.5px"><i class="ti ti-circle-check" style="color:var(--teal);font-size:13px"></i> Ley N° 29733 (Perú)</div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:11.5px"><i class="ti ti-circle-check" style="color:var(--teal);font-size:13px"></i> EEOC Regla 4/5</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><h3>Integridad SHA-256</h3></div>
+              <div style="font-size:10px;color:var(--muted);margin-bottom:5px">Huella criptográfica</div>
+              <div style="font-family:monospace;font-size:9.5px;background:var(--light);padding:8px;border-radius:6px;word-break:break-all;color:var(--text)">4f9a2c8b1d3e6f0a7b5c9d2e1f8a3b4c…e71d</div>
+              <div style="display:flex;align-items:center;gap:5px;margin-top:7px;font-size:11px;color:var(--green)">
+                <i class="ti ti-lock" style="font-size:12px"></i> Verificado · Inmutable
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 5: MODELOS IA ══ -->
+<div id="s-models" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div><div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div></div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item" onclick="show('dashboard',document.querySelectorAll('.wf-btn')[1])"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item active"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item" onclick="show('clientes',null)"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item" onclick="show('roles',document.querySelectorAll('.wf-btn')[5])"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item" onclick="show('gdpr',document.querySelectorAll('.wf-btn')[6])"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar">AC</div><div style="flex:1;overflow:hidden"><div class="sb-user-name">Alejandro Cumpen</div><div class="sb-user-role">Super Admin</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Modelos & Clientes</span>
+        <div class="topbar-search"><i class="ti ti-search"></i> Buscar modelo o cliente…</div>
+        <select class="form-select" style="width:auto;font-size:11px;padding:5px 9px;border-radius:6px"><option>Todos los sectores</option></select>
+        <button class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> Registrar modelo</button>
+      </div>
+      <div class="page-body">
+        <div class="page-hd"><div><h1>Gestión de Modelos de IA</h1><p>Configura endpoints, estrategias y umbrales de auditoría por cliente</p></div></div>
+        <div class="kpi-grid kpi-3" style="margin-bottom:14px">
+          <div class="kpi"><div class="kpi-label"><i class="ti ti-cpu"></i> Modelos activos</div><div class="kpi-val">8</div></div>
+          <div class="kpi"><div class="kpi-label"><i class="ti ti-building"></i> Clientes registrados</div><div class="kpi-val">12</div></div>
+          <div class="kpi"><div class="kpi-label"><i class="ti ti-alert-triangle"></i> Modelos con alertas</div><div class="kpi-val" style="color:var(--red)">3</div></div>
+        </div>
+        <!-- Tabla modelos -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-hd"><h3><i class="ti ti-list"></i> Modelos registrados</h3></div>
+          <table class="tbl">
+            <thead><tr><th>Modelo</th><th>Cliente</th><th>Sector</th><th>Protocolo</th><th>Estrategia</th><th>DIR actual</th><th>Modo</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">credit-modelV2</div><div style="font-size:10px;color:var(--muted)">v2.1.4</div></td>
+                <td>Banco Andino</td><td><span class="tag tag-teal">Financiero</span></td>
+                <td><span class="tag tag-gray">REST</span></td><td><span class="tag tag-navy">SHAP</span></td>
+                <td><strong style="color:var(--red)">0.71</strong></td>
+                <td><span class="tag tag-green">Activo</span></td>
+                <td><span class="tag tag-red"><i class="ti ti-alert-triangle" style="font-size:10px"></i> Alerta</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-settings"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">risk-assessV1</div><div style="font-size:10px;color:var(--muted)">v1.8.0</div></td>
+                <td>SeguroPeru</td><td><span class="tag tag-gray">Seguros</span></td>
+                <td><span class="tag tag-gray">REST</span></td><td><span class="tag tag-navy">LIME</span></td>
+                <td><strong style="color:var(--amber)">0.79</strong></td>
+                <td><span class="tag tag-green">Activo</span></td>
+                <td><span class="tag tag-amber">Revisión</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-settings"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">diag-modelV4</div><div style="font-size:10px;color:var(--muted)">v4.0.2</div></td>
+                <td>ClínicaSalud</td><td><span class="tag tag-teal">Salud</span></td>
+                <td><span class="tag tag-gray">gRPC</span></td><td><span class="tag tag-navy">StatParity</span></td>
+                <td><strong style="color:var(--green)">0.91</strong></td>
+                <td><span class="tag tag-green">Activo</span></td>
+                <td><span class="tag tag-green">OK</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-settings"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">hire-screenV3</div><div style="font-size:10px;color:var(--muted)">v3.2.1</div></td>
+                <td>RRHH Corp</td><td><span class="tag tag-gray">RRHH</span></td>
+                <td><span class="tag tag-gray">REST</span></td><td><span class="tag tag-navy">SHAP</span></td>
+                <td><strong style="color:var(--amber)">0.77</strong></td>
+                <td><span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--amber)"><i class="ti ti-moon" style="font-size:12px"></i> Pasivo</span></td>
+                <td><span class="tag tag-amber">Revisión</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-settings"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Registrar nuevo + Config proxy -->
+        <div class="two-col">
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-plus"></i> Registrar nuevo modelo</h3></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Nombre del modelo</label><input class="form-input" placeholder="ej. loan-modelV8"></div>
+              <div class="form-group"><label class="form-label">Versión</label><input class="form-input" placeholder="ej. v8.0.0"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Endpoint URL</label><input class="form-input" placeholder="https://api.cliente.com/v1/predict"></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Protocolo</label><select class="form-select"><option>REST</option><option>gRPC</option></select></div>
+              <div class="form-group"><label class="form-label">Estrategia auditoría</label><select class="form-select"><option>SHAP</option><option>LIME</option><option>StatParity</option></select></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center"><i class="ti ti-plug"></i> Conectar modelo</button>
+          </div>
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-adjustments"></i> Configuración del Proxy</h3></div>
+            <div class="form-group"><label class="form-label">Rate Limit (peticiones / hora)</label><input class="form-input" value="25,000"></div>
+            <div class="form-group"><label class="form-label">Umbral DIR mínimo</label><input class="form-input" value="0.80"><div class="form-hint">EEOC Regla 4/5 — mínimo recomendado: 0.80</div></div>
+            <div class="form-group"><label class="form-label">Modo de auditoría</label>
+              <select class="form-select"><option>Activo (bloquea si DIR &lt; umbral)</option><option>Pasivo (solo monitoreo)</option></select>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 11px;background:var(--light);border-radius:7px;font-size:12px;margin-bottom:8px">
+              <span>Retry automático en fallo</span>
+              <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 11px;background:var(--light);border-radius:7px;font-size:12px">
+              <span>Notificaciones vía Webhook</span>
+              <div class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"><div class="toggle-knob"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 6: ROLES ══ -->
+<div id="s-roles" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div><div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div></div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item" onclick="show('dashboard',document.querySelectorAll('.wf-btn')[1])"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item" onclick="show('models',document.querySelectorAll('.wf-btn')[4])"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item" onclick="show('clientes',null)"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item active"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item" onclick="show('gdpr',document.querySelectorAll('.wf-btn')[6])"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar">AC</div><div style="flex:1;overflow:hidden"><div class="sb-user-name">Alejandro Cumpen</div><div class="sb-user-role">Super Admin</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Usuarios & Roles</span>
+        <div class="topbar-search"><i class="ti ti-search"></i> Buscar usuario…</div>
+        <button class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> Invitar usuario</button>
+      </div>
+      <div class="page-body">
+        <div class="page-hd"><div><h1>Configuración de Roles</h1><p>Gestiona permisos y accesos al sistema TrustLog</p></div></div>
+        <div class="two-col" style="margin-bottom:14px">
+          <!-- Roles -->
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-users"></i> Roles del sistema</h3><button class="btn btn-outline btn-sm"><i class="ti ti-plus"></i> Nuevo rol</button></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:10px 12px;border:0.5px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:space-between">
+                <div>
+                  <div style="font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:5px"><i class="ti ti-crown" style="color:var(--amber);font-size:13px"></i> Super Admin</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:2px">Acceso completo a todos los módulos</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px">
+                  <span class="tag tag-teal">2 usuarios</span>
+                  <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                </div>
+              </div>
+              <div style="padding:10px 12px;border:0.5px solid var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:space-between;background:#f5fdfe">
+                <div>
+                  <div style="font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:5px"><i class="ti ti-shield-check" style="color:var(--teal);font-size:13px"></i> Auditor de Cumplimiento</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:2px">Lectura de tickets, NLP y reportes GDPR</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px">
+                  <span class="tag tag-teal">5 usuarios</span>
+                  <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                </div>
+              </div>
+              <div style="padding:10px 12px;border:0.5px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:space-between">
+                <div>
+                  <div style="font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:5px"><i class="ti ti-code" style="color:var(--navy);font-size:13px"></i> Desarrollador</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:2px">Gestión de modelos, API keys y proxy</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px">
+                  <span class="tag tag-teal">3 usuarios</span>
+                  <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                </div>
+              </div>
+              <div style="padding:10px 12px;border:0.5px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:space-between">
+                <div>
+                  <div style="font-size:12.5px;font-weight:500;display:flex;align-items:center;gap:5px"><i class="ti ti-eye" style="color:var(--muted);font-size:13px"></i> Solo lectura</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:2px">Visualización de dashboard y métricas</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px">
+                  <span class="tag tag-gray">8 usuarios</span>
+                  <button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Matriz permisos -->
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-table"></i> Matriz de permisos</h3></div>
+            <table class="tbl" style="font-size:11px">
+              <thead><tr><th>Permiso</th><th style="text-align:center">Super</th><th style="text-align:center">Auditor</th><th style="text-align:center">Dev</th><th style="text-align:center">Lectura</th></tr></thead>
+              <tbody>
+                <tr><td>Ver dashboard</td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td></tr>
+                <tr><td>Ver tickets</td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td></tr>
+                <tr><td>Exportar GDPR</td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td></tr>
+                <tr><td>Gestionar modelos</td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td></tr>
+                <tr><td>Gestionar roles</td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td></tr>
+                <tr><td>API Keys / Proxy</td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td></tr>
+                <tr><td>Configurar umbrales</td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--green)"><i class="ti ti-check"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td><td style="text-align:center;color:var(--muted)"><i class="ti ti-minus"></i></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Usuarios -->
+        <div class="card">
+          <div class="card-hd"><h3><i class="ti ti-user-circle"></i> Usuarios del equipo</h3></div>
+          <table class="tbl">
+            <thead><tr><th>Usuario</th><th>Código</th><th>Rol</th><th>Último acceso</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar" style="background:var(--teal)">AC</div><div><div style="font-size:12px;font-weight:500">Alejandro Cumpen</div><div style="font-size:10px;color:var(--muted)">a.cumpen@upc.pe</div></div></div></td>
+                <td style="font-family:monospace;font-size:11px;color:var(--muted)">U20251C684</td>
+                <td><span class="tag tag-amber"><i class="ti ti-crown" style="font-size:10px"></i> Super Admin</span></td>
+                <td style="font-size:11px;color:var(--muted)">Hoy, 14:30</td>
+                <td><span class="tag tag-green">Activo</span></td>
+                <td><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button></td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar" style="background:#1a5e8f">DH</div><div><div style="font-size:12px;font-weight:500">Diego Horna</div><div style="font-size:10px;color:var(--muted)">d.horna@upc.pe</div></div></div></td>
+                <td style="font-family:monospace;font-size:11px;color:var(--muted)">U202512246</td>
+                <td><span class="tag tag-teal"><i class="ti ti-code" style="font-size:10px"></i> Desarrollador</span></td>
+                <td style="font-size:11px;color:var(--muted)">Hoy, 13:15</td>
+                <td><span class="tag tag-green">Activo</span></td>
+                <td><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button></td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar" style="background:#6d4c9e">JL</div><div><div style="font-size:12px;font-weight:500">Jharinara Lescano</div><div style="font-size:10px;color:var(--muted)">j.lescano@upc.pe</div></div></div></td>
+                <td style="font-family:monospace;font-size:11px;color:var(--muted)">U202427114</td>
+                <td><span class="tag tag-teal"><i class="ti ti-shield-check" style="font-size:10px"></i> Auditor</span></td>
+                <td style="font-size:11px;color:var(--muted)">Ayer, 18:42</td>
+                <td><span class="tag tag-green">Activo</span></td>
+                <td><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button></td>
+              </tr>
+              <tr>
+                <td><div style="display:flex;align-items:center;gap:8px"><div class="avatar" style="background:#b5651d">ET</div><div><div style="font-size:12px;font-weight:500">Enmanuel Taboada</div><div style="font-size:10px;color:var(--muted)">e.taboada@upc.pe</div></div></div></td>
+                <td style="font-family:monospace;font-size:11px;color:var(--muted)">U20251E949</td>
+                <td><span class="tag tag-teal"><i class="ti ti-code" style="font-size:10px"></i> Desarrollador</span></td>
+                <td style="font-size:11px;color:var(--muted)">Hoy, 09:08</td>
+                <td><span class="tag tag-green">Activo</span></td>
+                <td><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 7: REPORTE GDPR ══ -->
+<div id="s-gdpr" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div><div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div></div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item" onclick="show('dashboard',document.querySelectorAll('.wf-btn')[1])"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item" onclick="show('models',document.querySelectorAll('.wf-btn')[4])"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item" onclick="show('clientes',null)"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item" onclick="show('roles',document.querySelectorAll('.wf-btn')[5])"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item active"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar">AC</div><div style="flex:1;overflow:hidden"><div class="sb-user-name">Alejandro Cumpen</div><div class="sb-user-role">Super Admin</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Reporte de Cumplimiento GDPR</span>
+        <select class="form-select" style="width:auto;font-size:11px;padding:5px 9px;border-radius:6px"><option>Banco Andino S.A.</option><option>SeguroPeru</option><option>ClínicaSalud</option></select>
+        <select class="form-select" style="width:auto;font-size:11px;padding:5px 9px;border-radius:6px"><option>Mayo 2026</option><option>Q1 2026</option></select>
+        <button class="btn btn-primary btn-sm"><i class="ti ti-file-text"></i> Generar PDF</button>
+      </div>
+      <div class="page-body">
+        <div class="page-hd">
+          <div><h1>Reporte GDPR — Banco Andino S.A.</h1><p>Período: Mayo 2026 · Generado el 14 may 2026, 14:45</p></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="tag tag-amber"><i class="ti ti-alert-triangle" style="font-size:10px"></i> Cumplimiento parcial</span>
+            <button class="btn btn-outline btn-sm"><i class="ti ti-share"></i> Compartir</button>
+          </div>
+        </div>
+        <div class="two-col" style="margin-bottom:14px">
+          <!-- Resumen ejecutivo -->
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-chart-pie"></i> Resumen ejecutivo</h3></div>
+              <div class="kpi-grid kpi-3" style="margin-bottom:0">
+                <div class="kpi" style="padding:10px 12px">
+                  <div class="kpi-label" style="font-size:10px">Decisiones auditadas</div>
+                  <div class="kpi-val" style="font-size:18px">8,432</div>
+                </div>
+                <div class="kpi" style="padding:10px 12px">
+                  <div class="kpi-label" style="font-size:10px">Con alerta sesgo</div>
+                  <div class="kpi-val" style="font-size:18px;color:var(--red)">127</div>
+                </div>
+                <div class="kpi" style="padding:10px 12px">
+                  <div class="kpi-label" style="font-size:10px">Tickets SHA-256</div>
+                  <div class="kpi-val" style="font-size:18px;color:var(--green)">8,432</div>
+                </div>
+              </div>
+            </div>
+            <div class="gdpr-section">
+              <div class="gdpr-section-title"><i class="ti ti-circle-check" style="color:var(--green);font-size:13px"></i> Art. 22 GDPR — Derecho a explicación</div>
+              <div style="font-size:12px;color:var(--text);line-height:1.65">El 100% de las decisiones auditadas generaron un reporte NLP en español disponible para el usuario afectado, cumpliendo el derecho a la explicación de decisiones automatizadas.</div>
+              <div style="margin-top:8px;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green)"><i class="ti ti-check"></i> Cumplido</div>
+            </div>
+            <div class="gdpr-section" style="border-color:#fcd5d0;background:#fff8f7">
+              <div class="gdpr-section-title"><i class="ti ti-alert-triangle" style="color:var(--red);font-size:13px"></i> EEOC Regla 4/5 — Equidad algorítmica</div>
+              <div style="font-size:12px;color:var(--text);line-height:1.65">Se detectaron 127 decisiones con DIR por debajo del umbral 0.80, representando un 1.5% del total. El modelo credit-modelV2 presenta el patrón de sesgo más frecuente en el sector financiero.</div>
+              <div style="margin-top:8px;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--red)"><i class="ti ti-x"></i> Requiere acción correctiva</div>
+            </div>
+            <div class="gdpr-section">
+              <div class="gdpr-section-title"><i class="ti ti-circle-check" style="color:var(--green);font-size:13px"></i> Ley N° 29733 — Protección de datos</div>
+              <div style="font-size:12px;color:var(--text);line-height:1.65">Todas las variables sensibles interceptadas fueron anonimizadas antes del procesamiento. El almacenamiento usa cifrado AES-256 y los tickets SHA-256 se conservan en repositorio append-only.</div>
+              <div style="margin-top:8px;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green)"><i class="ti ti-check"></i> Cumplido</div>
+            </div>
+          </div>
+          <!-- Dir evolution + tabla modelos -->
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-trending-up"></i> Evolución DIR — Mayo 2026</h3></div>
+              <div style="display:flex;align-items:flex-end;gap:4px;height:80px;margin-bottom:6px">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;background:var(--red);border-radius:3px 3px 0 0;height:65%"></div><span style="font-size:9px;color:var(--muted)">S1</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;background:var(--amber);border-radius:3px 3px 0 0;height:72%"></div><span style="font-size:9px;color:var(--muted)">S2</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;background:var(--amber);border-radius:3px 3px 0 0;height:75%"></div><span style="font-size:9px;color:var(--muted)">S3</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="flex:1;width:100%;background:var(--red);border-radius:3px 3px 0 0;height:70%"></div><span style="font-size:9px;color:var(--muted)">S4</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:1px;background:var(--amber)"></span> DIR promedio mensual: <strong style="color:var(--amber)">0.74</strong>
+                <span style="margin-left:8px;display:inline-block;width:8px;height:1.5px;background:var(--teal);vertical-align:middle"></span> Umbral EEOC: 0.80
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-cpu"></i> Modelos auditados</h3></div>
+              <table class="tbl" style="font-size:11px">
+                <thead><tr><th>Modelo</th><th>Decisiones</th><th>DIR prom.</th><th>Alertas</th></tr></thead>
+                <tbody>
+                  <tr><td>credit-modelV2</td><td>5,210</td><td style="color:var(--red);font-weight:600">0.71</td><td><span class="tag tag-red">112</span></td></tr>
+                  <tr><td>risk-assessV1</td><td>2,180</td><td style="color:var(--amber);font-weight:600">0.79</td><td><span class="tag tag-amber">15</span></td></tr>
+                  <tr><td>loan-v7</td><td>1,042</td><td style="color:var(--green);font-weight:600">0.86</td><td><span class="tag tag-green">0</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-lock"></i> Integridad de registros</h3></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Tickets SHA-256 emitidos</span><span style="font-weight:600;color:var(--green)">8,432</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Verificación exitosa</span><span style="font-weight:600;color:var(--green)">100%</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Intentos de manipulación</span><span style="font-weight:600">0</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Cifrado almacenamiento</span><span style="font-weight:600;color:var(--teal)">AES-256</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 8: LÍNEA DE TIEMPO ══ -->
+<div id="s-timeline" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div><div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div></div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item" onclick="show('dashboard',document.querySelectorAll('.wf-btn')[1])"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item" onclick="show('models',document.querySelectorAll('.wf-btn')[4])"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item" onclick="show('clientes',null)"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item" onclick="show('roles',document.querySelectorAll('.wf-btn')[5])"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item" onclick="show('gdpr',document.querySelectorAll('.wf-btn')[6])"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar">AC</div><div style="flex:1;overflow:hidden"><div class="sb-user-name">Alejandro Cumpen</div><div class="sb-user-role">Super Admin</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Línea de Tiempo — TXN-00871</span>
+        <div style="display:flex;gap:6px;margin-left:auto">
+          <button class="btn btn-ghost btn-sm" onclick="show('ticket',document.querySelectorAll('.wf-btn')[2])"><i class="ti ti-arrow-left"></i> Volver al ticket</button>
+          <button class="btn btn-primary btn-sm"><i class="ti ti-download"></i> Exportar PDF</button>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="page-hd">
+          <div><h1>Línea de tiempo de transacción</h1><p>TXN-00871 · Banco Andino · credit-modelV2 · 14 may 2026, 14:32:07 UTC</p></div>
+          <span class="tag tag-red"><i class="ti ti-alert-triangle" style="font-size:10px"></i> Alerta sesgo detectado</span>
+        </div>
+        <div class="two-col">
+          <!-- Timeline -->
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-timeline"></i> Pasos del proceso de auditoría</h3><span style="font-size:10px;color:var(--muted)">Duración total: 1,247 ms</span></div>
+            <div style="padding-top:4px">
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#e0f5f7;color:var(--teal)"><i class="ti ti-arrows-exchange" style="font-size:12px"></i></div>
+                <div class="tl-content">
+                  <div class="tl-title">Petición recibida por Proxy Inverso</div>
+                  <div class="tl-meta">14:32:07.001 UTC · +0 ms</div>
+                  <div style="margin-top:4px;font-size:11px;color:var(--muted)">Cliente: Banco Andino · Protocolo: REST · JWT válido</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#e0f5f7;color:var(--teal)"><i class="ti ti-shield-check" style="font-size:12px"></i></div>
+                <div class="tl-content">
+                  <div class="tl-title">Validación de autenticación JWT</div>
+                  <div class="tl-meta">14:32:07.028 UTC · +27 ms</div>
+                  <div style="margin-top:4px;font-size:11px;color:var(--green)">✓ Token válido · RSA-256 verificado</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#e0f5f7;color:var(--teal)"><i class="ti ti-check" style="font-size:12px"></i></div>
+                <div class="tl-content">
+                  <div class="tl-title">Validación de formato del payload</div>
+                  <div class="tl-meta">14:32:07.065 UTC · +64 ms</div>
+                  <div style="margin-top:4px;font-size:11px;color:var(--green)">✓ JSON Schema válido · 12 variables detectadas</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#e0f5f7;color:var(--teal)"><i class="ti ti-cpu" style="font-size:12px"></i></div>
+                <div class="tl-content">
+                  <div class="tl-title">Enrutamiento al modelo de IA externo</div>
+                  <div class="tl-meta">14:32:07.089 UTC · +88 ms</div>
+                  <div style="margin-top:4px;font-size:11px;color:var(--muted)">Endpoint: api.bancoandinoia.com/credit · Respuesta: 342 ms</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#fef3e2;color:var(--amber)"><i class="ti ti-scale" style="font-size:12px"></i></div>
+                <div class="tl-content">
+                  <div class="tl-title">Análisis de equidad — Chain of Responsibility</div>
+                  <div class="tl-meta">14:32:07.431 UTC · +430 ms</div>
+                  <div style="margin-top:4px;font-size:11px;color:var(--red)">⚠ DIR calculado: 0.71 · Por debajo del umbral 0.80</div>
+                  <div style="margin-top:2px;font-size:11px;color:var(--muted)">Equalized Odds: 0.68 · Demographic Parity: 0.72</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#e6f7ee;color:var(--green)"><i class="ti ti-brain" style="font-size:12px"></i></div>
+                <div class="tl-content">
+                  <div class="tl-title">Generación de reporte NLP</div>
+                  <div class="tl-meta">14:32:07.892 UTC · +891 ms</div>
+                  <div style="margin-top:4px;font-size:11px;color:var(--green)">✓ Reporte en español generado · SHAP values extraídos</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot" style="background:#e6f7ee;color:var(--green)"><i class="ti ti-certificate" style="font-size:12px"></i></div>
+                <div class="tl-content">
+                  <div class="tl-title">Emisión del Ticket de Decisión SHA-256</div>
+                  <div class="tl-meta">14:32:08.248 UTC · +1,247 ms</div>
+                  <div style="margin-top:4px;font-size:11px;color:var(--green)">✓ Hash generado · Almacenado en repositorio append-only</div>
+                  <div style="margin-top:4px;font-family:monospace;font-size:10px;color:var(--muted)">4f9a2c8b1d3e6f0a…e71d</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Panel derecho -->
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-stopwatch"></i> Tiempos por módulo</h3></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px"><span style="color:var(--muted)">Intercepción + Auth</span><span style="font-weight:500">88 ms</span></div>
+                  <div class="prog"><div class="prog-fill" style="width:7%;background:var(--teal)"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px"><span style="color:var(--muted)">Modelo IA externo</span><span style="font-weight:500">342 ms</span></div>
+                  <div class="prog"><div class="prog-fill" style="width:27%;background:var(--navy)"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px"><span style="color:var(--muted)">Auditoría equidad</span><span style="font-weight:500">461 ms</span></div>
+                  <div class="prog"><div class="prog-fill" style="width:37%;background:var(--amber)"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:3px"><span style="color:var(--muted)">Generación NLP</span><span style="font-weight:500">356 ms</span></div>
+                  <div class="prog"><div class="prog-fill" style="width:28%;background:var(--green)"></div></div>
+                </div>
+                <div style="padding-top:7px;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;font-size:12px">
+                  <strong>Total</strong><strong style="color:var(--green)">1,247 ms</strong>
+                </div>
+                <div style="font-size:10px;color:var(--muted)">Límite RNF-001: 15,000 ms · ✓ Dentro del umbral</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-info-circle"></i> Metadatos del ticket</h3></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">ID transacción</span><span style="font-family:monospace;font-size:11px">TXN-2026-00871</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Timestamp UTC</span><span style="font-size:11px">2026-05-14T14:32:07Z</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Versión modelo</span><span style="font-size:11px">credit-modelV2 · v2.1.4</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Estrategia audit.</span><span style="font-size:11px">SHAP</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:11.5px"><span style="color:var(--muted)">Modo proxy</span><span class="tag tag-green" style="font-size:10px">Activo</span></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-hd"><h3><i class="ti ti-bell"></i> Alertas generadas</h3></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="display:flex;align-items:center;gap:7px;font-size:11.5px"><i class="ti ti-circle-check" style="color:var(--green);font-size:13px"></i> Webhook enviado a Banco Andino</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:11.5px"><i class="ti ti-circle-check" style="color:var(--green);font-size:13px"></i> Correo enviado a admin@bancoandinoia.com</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:11.5px"><i class="ti ti-circle-check" style="color:var(--green);font-size:13px"></i> Dashboard actualizado en tiempo real</div>
+              </div>
+            </div>
+            <button class="btn btn-outline" style="justify-content:center" onclick="show('nlp',document.querySelectorAll('.wf-btn')[3])"><i class="ti ti-brain"></i> Ver reporte NLP completo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN 9: CLIENTES ══ -->
+<div id="s-clientes" class="screen">
+  <div class="shell">
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon"><i class="ti ti-shield-check"></i></div><div><div class="sb-logo-name">TrustLog</div><div class="sb-logo-tag">Auditoría IA</div></div></div>
+      <div class="sb-section">Principal</div>
+      <div class="sb-item" onclick="show('dashboard',null)"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="sb-item" onclick="show('ticket',null)"><i class="ti ti-file-certificate"></i> Tickets <span class="sb-badge">3</span></div>
+      <div class="sb-item" onclick="show('nlp',null)"><i class="ti ti-brain"></i> Reportes NLP</div>
+      <div class="sb-section">Gestión</div>
+      <div class="sb-item" onclick="show('models',null)"><i class="ti ti-cpu"></i> Modelos IA</div>
+      <div class="sb-item active"><i class="ti ti-building"></i> Clientes</div>
+      <div class="sb-item" onclick="show('roles',null)"><i class="ti ti-users"></i> Roles</div>
+      <div class="sb-section">Reportes</div>
+      <div class="sb-item" onclick="show('gdpr',null)"><i class="ti ti-file-text"></i> Reporte GDPR</div>
+      <div class="sb-bottom"><div class="sb-user"><div class="sb-avatar">AC</div><div style="flex:1;overflow:hidden"><div class="sb-user-name">Alejandro Cumpen</div><div class="sb-user-role">Super Admin</div></div></div></div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title">Clientes B2B</span>
+        <div class="topbar-search"><i class="ti ti-search"></i> Buscar cliente, RUC…</div>
+        <select class="form-select" style="width:auto;font-size:11px;padding:5px 9px;border-radius:6px"><option>Todos los sectores</option><option>Financiero</option><option>Salud</option><option>RRHH</option></select>
+        <button class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> Registrar cliente</button>
+      </div>
+      <div class="page-body">
+        <div class="page-hd"><div><h1>Gestión de Clientes B2B</h1><p>Organizaciones registradas en TrustLog con acceso al framework de auditoría</p></div></div>
+        <!-- KPIs -->
+        <div class="kpi-grid kpi-4" style="margin-bottom:14px">
+          <div class="kpi"><div class="kpi-label"><i class="ti ti-building"></i> Clientes activos</div><div class="kpi-val">12</div><div class="kpi-delta up">+2 este mes</div></div>
+          <div class="kpi"><div class="kpi-label"><i class="ti ti-cpu"></i> Modelos auditados</div><div class="kpi-val">8</div><div class="kpi-delta neutral">En 4 sectores</div></div>
+          <div class="kpi"><div class="kpi-label"><i class="ti ti-key"></i> API Keys activas</div><div class="kpi-val">12</div><div class="kpi-delta neutral">1 por cliente</div></div>
+          <div class="kpi"><div class="kpi-label"><i class="ti ti-alert-triangle"></i> Clientes con alerta</div><div class="kpi-val" style="color:var(--red)">3</div><div class="kpi-delta down">DIR &lt; 0.80</div></div>
+        </div>
+        <!-- Tabla clientes -->
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-hd"><h3><i class="ti ti-building"></i> Clientes registrados</h3></div>
+          <table class="tbl">
+            <thead><tr><th>Cliente</th><th>RUC</th><th>Sector</th><th>Modelos</th><th>API Key</th><th>Peticiones hoy</th><th>DIR prom.</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">Banco Andino S.A.</div><div style="font-size:10px;color:var(--muted)">banco.andino.pe</div></td>
+                <td style="font-size:11px;font-family:monospace;color:var(--muted)">20512345678</td>
+                <td><span class="tag tag-teal">Financiero</span></td>
+                <td style="font-size:12px">2</td>
+                <td><span style="font-family:monospace;font-size:10px;color:var(--muted)">tl-k-ba••••••</span></td>
+                <td style="font-size:12px;font-weight:500">5,210</td>
+                <td><strong style="color:var(--red)">0.71</strong></td>
+                <td><span class="tag tag-red">Alerta</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-eye"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-key"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">SeguroPeru</div><div style="font-size:10px;color:var(--muted)">seguros.pe</div></td>
+                <td style="font-size:11px;font-family:monospace;color:var(--muted)">20512345679</td>
+                <td><span class="tag tag-gray">Seguros</span></td>
+                <td style="font-size:12px">1</td>
+                <td><span style="font-family:monospace;font-size:10px;color:var(--muted)">tl-k-sp••••••</span></td>
+                <td style="font-size:12px;font-weight:500">2,180</td>
+                <td><strong style="color:var(--amber)">0.79</strong></td>
+                <td><span class="tag tag-amber">Revisión</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-eye"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-key"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">ClínicaSalud</div><div style="font-size:10px;color:var(--muted)">clinicasalud.pe</div></td>
+                <td style="font-size:11px;font-family:monospace;color:var(--muted)">20512345680</td>
+                <td><span class="tag tag-teal">Salud</span></td>
+                <td style="font-size:12px">1</td>
+                <td><span style="font-family:monospace;font-size:10px;color:var(--muted)">tl-k-cs••••••</span></td>
+                <td style="font-size:12px;font-weight:500">1,042</td>
+                <td><strong style="color:var(--green)">0.91</strong></td>
+                <td><span class="tag tag-green">OK</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-eye"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-key"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">RRHH Corp</div><div style="font-size:10px;color:var(--muted)">rrhhcorp.pe</div></td>
+                <td style="font-size:11px;font-family:monospace;color:var(--muted)">20512345681</td>
+                <td><span class="tag tag-gray">RRHH</span></td>
+                <td style="font-size:12px">1</td>
+                <td><span style="font-family:monospace;font-size:10px;color:var(--muted)">tl-k-rh••••••</span></td>
+                <td style="font-size:12px;font-weight:500">892</td>
+                <td><strong style="color:var(--amber)">0.77</strong></td>
+                <td><span class="tag tag-amber">Revisión</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-eye"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-key"></i></button></div></td>
+              </tr>
+              <tr>
+                <td><div style="font-weight:500;font-size:12px">BancoNorte</div><div style="font-size:10px;color:var(--muted)">banconorte.pe</div></td>
+                <td style="font-size:11px;font-family:monospace;color:var(--muted)">20512345682</td>
+                <td><span class="tag tag-teal">Financiero</span></td>
+                <td style="font-size:12px">2</td>
+                <td><span style="font-family:monospace;font-size:10px;color:var(--muted)">tl-k-bn••••••</span></td>
+                <td style="font-size:12px;font-weight:500">15,818</td>
+                <td><strong style="color:var(--green)">0.86</strong></td>
+                <td><span class="tag tag-green">OK</span></td>
+                <td><div style="display:flex;gap:4px"><button class="btn btn-ghost btn-sm"><i class="ti ti-eye"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-edit"></i></button><button class="btn btn-ghost btn-sm"><i class="ti ti-key"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Formulario registro cliente -->
+        <div class="two-col">
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-plus"></i> Registrar nuevo cliente B2B</h3></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Nombre de la organización</label><input class="form-input" placeholder="ej. Banco XYZ S.A."></div>
+              <div class="form-group"><label class="form-label">RUC</label><input class="form-input" placeholder="20512345678"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Sector</label><select class="form-select"><option>Financiero</option><option>Salud</option><option>RRHH</option><option>Seguros</option></select></div>
+              <div class="form-group"><label class="form-label">Correo corporativo</label><input class="form-input" placeholder="admin@empresa.com"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Dominio web</label><input class="form-input" placeholder="empresa.com"></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center"><i class="ti ti-building-plus"></i> Registrar cliente</button>
+          </div>
+          <div class="card">
+            <div class="card-hd"><h3><i class="ti ti-key"></i> Gestión de API Keys</h3></div>
+            <div style="background:var(--light);border-radius:8px;padding:12px;margin-bottom:12px">
+              <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">API Key activa — Banco Andino</div>
+              <div style="font-family:monospace;font-size:11px;color:var(--text);background:#fff;padding:8px 10px;border-radius:6px;border:0.5px solid var(--border);word-break:break-all">tl-k-ba-••••••••••••••••••••••••••••••••</div>
+              <div style="margin-top:8px;font-size:10px;color:var(--muted)">Creada: 01 may 2026 · Último uso: Hoy 14:32 · Entropía: 256 bits</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <button class="btn btn-outline btn-sm" style="justify-content:center"><i class="ti ti-refresh"></i> Regenerar API Key</button>
+              <button class="btn btn-danger btn-sm" style="justify-content:center"><i class="ti ti-trash"></i> Revocar API Key</button>
+            </div>
+            <div style="margin-top:12px;padding-top:12px;border-top:0.5px solid var(--border)">
+              <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Consumo del plan</div>
+              <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:5px"><span style="color:var(--muted)">Peticiones hoy</span><span style="font-weight:600">5,210 / 25,000</span></div>
+              <div class="prog" style="height:7px"><div class="prog-fill" style="width:21%;background:var(--green)"></div></div>
+              <div style="font-size:10px;color:var(--muted);margin-top:4px">21% del límite diario utilizado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const labels = [
+  'Pantalla 1 / 9 — Login',
+  'Pantalla 2 / 9 — Dashboard',
+  'Pantalla 3 / 9 — Tickets',
+  'Pantalla 4 / 9 — Reporte NLP',
+  'Pantalla 5 / 9 — Modelos IA',
+  'Pantalla 6 / 9 — Roles',
+  'Pantalla 7 / 9 — Reporte GDPR',
+  'Pantalla 8 / 9 — Línea de tiempo',
+  'Pantalla 9 / 9 — Clientes B2B'
+];
+const ids = ['login','dashboard','ticket','nlp','models','roles','gdpr','timeline','clientes'];
+
+function show(id, btn){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.wf-btn').forEach(b => b.classList.remove('active'));
+  // deactivate all sidebar items
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const el = document.getElementById('s-' + id);
+  if(el) el.classList.add('active');
+  if(btn) btn.classList.add('active');
+  const idx = ids.indexOf(id);
+  document.getElementById('screen-label').textContent = idx >= 0 ? labels[idx] : '';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
